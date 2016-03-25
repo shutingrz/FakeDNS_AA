@@ -143,6 +143,7 @@ class Metasploit3 < Msf::Auxiliary
         tc_s = typeclass.to_s().gsub(/^Resolv::DNS::Resource::/, "")
 
         request.qr = 1
+        request.aa = 0
         request.ra = 0
 
         lst << "#{tc_s} #{name}"
@@ -219,6 +220,7 @@ class Metasploit3 < Msf::Auxiliary
 
         #Assert Authority
         if (@match_target)
+          request.aa = 1
           ns = Resolv::DNS::Resource::IN::NS.new(Resolv::DNS::Name.create(@fake_nsname))
           ad = Resolv::DNS::Resource::IN::A.new(target_host(src_addr))
           request.add_authority(@fake_zonename, @ttl, ns)
